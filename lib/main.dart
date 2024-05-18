@@ -1,4 +1,5 @@
 import 'package:custom_renderbox_mbo/circle_layout.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,6 @@ class MainApp extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text('$index'),
                   ),
-                  // child: Text('${index}' * 100),
                 ),
               ),
             ),

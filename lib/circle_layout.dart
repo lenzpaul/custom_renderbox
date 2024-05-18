@@ -40,6 +40,8 @@ class RenderCircleLayout extends RenderBox
     // Sets maxWidth and maxHeight to the minimum of the available space.
     // final constraints = this.constraints.tighten();
 
+    // The first child in the list of children. This is provided by the
+    // ContainerRenderObjectMixin.
     RenderBox? child = firstChild;
 
     // Iterate over all the children and layout them in a circle
