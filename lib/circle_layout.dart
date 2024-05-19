@@ -99,6 +99,16 @@ class RenderCircleLayout extends RenderBox
   void paint(PaintingContext context, Offset offset) {
     final Set<RenderBox> paintedChildren = {};
 
+    // Paint the circle
+    context.canvas.drawCircle(
+      offset + Offset(radius, radius),
+      radius,
+      Paint()
+        ..color = Colors.blue.withOpacity(0.5)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 4,
+    );
+
     RenderBox? child = firstChild;
     while (child != null) {
       final CircleLayoutParentData childParentData =

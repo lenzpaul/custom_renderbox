@@ -15,7 +15,7 @@ class _MainAppState extends State<MainApp> {
   static const _radius = 150.0;
 
   /// The number of children to display around the circle.
-  int numChildren = 8;
+  int numChildren = 0;
 
   // The size of the children. If not provided, the children will be allowed to
   // size themselves based on their content.
@@ -49,7 +49,7 @@ class _MainAppState extends State<MainApp> {
                 child: Slider(
                   value: _childrenSize!,
                   min: _radius * .5,
-                  max: _radius * .95,
+                  max: _radius * 1.25,
                   onChanged: (value) {
                     setState(() => _childrenSize = value);
                   },
@@ -66,7 +66,7 @@ class _MainAppState extends State<MainApp> {
                   icon: const Icon(Icons.remove),
                   onPressed: () {
                     setState(() {
-                      if (numChildren > 1) {
+                      if (numChildren > 0) {
                         numChildren--;
                       }
                     });
@@ -121,7 +121,7 @@ class ChildWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          '$index',
+          '${index + 1}',
           style: const TextStyle(
             fontSize: 30,
             color: Colors.black,
