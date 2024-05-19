@@ -30,8 +30,15 @@ class RenderCircleLayout extends RenderBox
     //
     // Allow for each child to be able to size itself based on its content,
     // within the maximum allowable space.
-    final constraints = this.constraints.loosen();
+    // final BoxConstraints constraints = this.constraints.loosen();
 
+    // The constraints for the children.
+    final BoxConstraints constraints = BoxConstraints(
+      minWidth: radius * 0.85,
+      minHeight: radius * 0.85,
+      maxHeight: radius * 0.85,
+      maxWidth: radius * 0.85,
+    );
     // If you want to force the children to have a specific size, you can use
     // the following line instead of the one above. It will force the children
     // to take the available space, but it will not allow them to be bigger than
