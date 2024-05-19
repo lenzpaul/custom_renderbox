@@ -77,12 +77,17 @@ class RenderCircleLayout extends RenderBox
   /// the children will be painted.
   @override
   void paint(PaintingContext context, Offset offset) {
-    RenderBox? child = firstChild;
+    final Set<RenderBox> paintedChildren = {};
 
+    RenderBox? child = firstChild;
     while (child != null) {
       final CircleLayoutParentData childParentData =
           child.parentData! as CircleLayoutParentData;
+
       context.paintChild(child, childParentData.offset + offset);
+
+      paintedChildren.add(child);
+      _paintOverlap(context, offset, child, paintedChildren);
 
       child = childParentData.nextSibling;
     }
@@ -141,4 +146,41 @@ Offset _calculateChildOffset(double angle, RenderBox child, double radius) {
   double yCenterOffset = radius - child.size.height / 2;
 
   return Offset(xCoordinate + xCenterOffset, yCoordinate + yCenterOffset);
+}
+
+/// Paints the overlap between the given child and other painted children.
+///
+/// The [context] is the painting context used to paint the overlap.
+/// The [offset] is the offset of the parent render box.
+/// The [child] is the render box for which the overlap is being painted.
+/// The [paintedChildren] is the set of other painted children to check for overlap.
+void _paintOverlap(
+  PaintingContext context,
+  Offset offset,
+  RenderBox child,
+  Set<RenderBox> paintedChildren,
+) {
+  final CircleLayoutParentData childParentData =
+      child.parentData! as CircleLayoutParentData;
+
+  for (var otherChild in paintedChildren) {
+    if (otherChild == child) continue;
+
+    final CircleLayoutParentData otherChildParentData =
+        otherChild.parentData! as CircleLayoutParentData;
+
+    final Rect childRect = (childParentData.offset + offset) & child.size;
+    final Rect otherChildRect =
+        (otherChildParentData.offset + offset) & otherChild.size;
+
+    if (childRect.overlaps(otherChildRect)) {
+      final Rect overlapRect = childRect.intersect(otherChildRect);
+      context.canvas.drawRect(
+          overlapRect,
+          Paint()
+            ..color = Colors.red.withOpacity(0.75)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 4);
+    }
+  }
 }
