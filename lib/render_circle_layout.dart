@@ -1,6 +1,8 @@
 import 'dart:math' as math;
-import 'package:flutter/rendering.dart';
+
+import 'package:custom_renderbox_mbo/circle_layout_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 /// {@template render_circle_layout}
 /// A render object that positions its children in a circle.
@@ -60,7 +62,6 @@ class RenderCircleLayout extends RenderBox
     // final BoxConstraints constraints = this.constraints.loosen();
 
     // The constraints for the children.
-
     final BoxConstraints constraints = BoxConstraints(
       minWidth: childrenSize?.width ?? 0.0,
       minHeight: childrenSize?.height ?? 0.0,
@@ -81,7 +82,7 @@ class RenderCircleLayout extends RenderBox
 
     // Iterate over all the children and layout them in a circle
     while (child != null) {
-      // Compute the size and position of the child
+      // Compute the size of the child
       child.layout(
         constraints,
         parentUsesSize: true,
@@ -91,6 +92,10 @@ class RenderCircleLayout extends RenderBox
       final CircleLayoutParentData childParentData =
           child.parentData! as CircleLayoutParentData;
 
+      // Compute the position of the child.
+      //
+      // Determine where the child should be positioned relative to the top-left
+      // corner of the [RenderCircleLayout]'s bounding box.
       childParentData.offset = _calculateChildOffset(angle, child, radius);
 
       angle += step;
@@ -132,69 +137,6 @@ class RenderCircleLayout extends RenderBox
   }
 }
 
-/// Parent data for a child in a [CircleLayout].
-///
-/// This class extends [ContainerBoxParentData] and is used to store layout
-/// information for [RenderBox] children of [CircleLayout].
-class CircleLayoutParentData extends ContainerBoxParentData<RenderBox> {}
-
-/// {@template circle_layout}
-/// A layout widget that positions its children in a circle.
-///
-/// This is the actual widget that we will use in our application. It uses the
-/// [RenderCircleLayout] render object to layout its children in a circle.
-/// {@endtemplate}
-class CircleLayout extends MultiChildRenderObjectWidget {
-  /// {@macro radius}
-  final double radius;
-
-  /// {@macro childrenSize}
-  final Size? childrenSize;
-
-  /// {@macro circle_layout}
-  const CircleLayout({
-    super.key,
-    required this.radius,
-    required super.children,
-    this.childrenSize,
-  });
-
-  /// Creates the render object for this widget. Called by the framework when
-  /// this widget is added to the tree.
-  @override
-  RenderCircleLayout createRenderObject(BuildContext context) {
-    return RenderCircleLayout(
-      radius: radius,
-      childrenSize: childrenSize,
-    );
-  }
-
-  /// Updates the render object for this widget. Called by the framework when
-  /// the widget is updated.
-  ///
-  /// Note that we are updating the radius of the render object here. This is
-  /// because the widget is immutable, and not the render object. This means that
-  /// the render object instance will be the same across multiple builds of the
-  /// widget, and we need to update its properties to reflect the new widget
-  /// properties.
-  @override
-  void updateRenderObject(
-      BuildContext context, RenderCircleLayout renderObject) {
-    renderObject.radius = radius;
-    renderObject.childrenSize = childrenSize;
-  }
-}
-
-/// Calculates the offset of a child widget around the circle.
-Offset _calculateChildOffset(double angle, RenderBox child, double radius) {
-  double xCoordinate = radius * math.cos(angle);
-  double xCenterOffset = radius - child.size.width / 2;
-  double yCoordinate = radius * math.sin(angle);
-  double yCenterOffset = radius - child.size.height / 2;
-
-  return Offset(xCoordinate + xCenterOffset, yCoordinate + yCenterOffset);
-}
-
 /// Paints the overlap between the given child and other painted children.
 ///
 /// The [context] is the painting context used to paint the overlap.
@@ -231,3 +173,19 @@ void _paintOverlap(
     }
   }
 }
+
+/// Calculates the offset of a child widget around the circle.
+Offset _calculateChildOffset(double angle, RenderBox child, double radius) {
+  double xCoordinate = radius * math.cos(angle);
+  double xCenterOffset = radius - child.size.width / 2;
+  double yCoordinate = radius * math.sin(angle);
+  double yCenterOffset = radius - child.size.height / 2;
+
+  return Offset(xCoordinate + xCenterOffset, yCoordinate + yCenterOffset);
+}
+
+/// Parent data for a child in a [CircleLayout].
+///
+/// This class extends [ContainerBoxParentData] and is used to store layout
+/// information for [RenderBox] children of [CircleLayout].
+class CircleLayoutParentData extends ContainerBoxParentData<RenderBox> {}
