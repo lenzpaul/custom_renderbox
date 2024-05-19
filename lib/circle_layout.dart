@@ -8,7 +8,26 @@ class RenderCircleLayout extends RenderBox
         RenderBoxContainerDefaultsMixin<RenderBox, CircleLayoutParentData> {
   double radius;
 
-  RenderCircleLayout({required this.radius});
+  /// The size of the children. If not provided, the children will be allowed to
+  /// size themselves based on their content.
+  Size? _childrenSize;
+
+  /// The size of the children. If not provided, the children will be allowed to
+  /// size themselves based on their content.
+  Size? get childrenSize => _childrenSize;
+
+  /// The size of the children. If not provided, the children will be allowed to
+  /// size themselves based on their content.
+  set childrenSize(Size? value) {
+    _childrenSize = value;
+    markNeedsLayout();
+  }
+
+  RenderCircleLayout({
+    required double radius,
+    Size? childrenSize,
+  })  : _childrenSize = childrenSize,
+        radius = radius;
   @override
   void setupParentData(RenderBox child) {
     if (child.parentData is! CircleLayoutParentData) {
@@ -33,11 +52,12 @@ class RenderCircleLayout extends RenderBox
     // final BoxConstraints constraints = this.constraints.loosen();
 
     // The constraints for the children.
+
     final BoxConstraints constraints = BoxConstraints(
-      minWidth: radius * 0.85,
-      minHeight: radius * 0.85,
-      maxHeight: radius * 0.85,
-      maxWidth: radius * 0.85,
+      minWidth: childrenSize?.width ?? 0.0,
+      minHeight: childrenSize?.height ?? 0.0,
+      maxWidth: childrenSize?.width ?? double.infinity,
+      maxHeight: childrenSize?.height ?? double.infinity,
     );
     // If you want to force the children to have a specific size, you can use
     // the following line instead of the one above. It will force the children
@@ -108,19 +128,24 @@ class CircleLayoutParentData extends ContainerBoxParentData<RenderBox> {}
 /// {@endtemplate}
 class CircleLayout extends MultiChildRenderObjectWidget {
   final double radius;
+  final Size? childrenSize;
 
   /// {@macro circle_layout}
   const CircleLayout({
     super.key,
     required this.radius,
     required super.children,
+    this.childrenSize,
   });
 
   /// Creates the render object for this widget. Called by the framework when
   /// this widget is added to the tree.
   @override
   RenderCircleLayout createRenderObject(BuildContext context) {
-    return RenderCircleLayout(radius: radius);
+    return RenderCircleLayout(
+      radius: radius,
+      childrenSize: childrenSize,
+    );
   }
 
   /// Updates the render object for this widget. Called by the framework when
@@ -135,6 +160,7 @@ class CircleLayout extends MultiChildRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, RenderCircleLayout renderObject) {
     renderObject.radius = radius;
+    renderObject.childrenSize = childrenSize;
   }
 }
 
