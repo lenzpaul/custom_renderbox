@@ -47,6 +47,10 @@ class RenderCircleLayout extends RenderBox
 
   @override
   void performLayout() {
+    // Set the size of the container that this render object represents to be
+    // the diameter of the circle
+    size = Size(2 * radius, 2 * radius);
+
     // The angle for each child. It starts at 0 and increases by the step for
     // each child.
     double angle = 0;
@@ -56,25 +60,12 @@ class RenderCircleLayout extends RenderBox
     final double step = 2 * math.pi / childCount;
 
     // The constraints for the children.
-    //
-    // Allow for each child to be able to size itself based on its content,
-    // within the maximum allowable space.
-    // final BoxConstraints constraints = this.constraints.loosen();
-
-    // The constraints for the children.
     final BoxConstraints constraints = BoxConstraints(
       minWidth: childrenSize?.width ?? 0.0,
       minHeight: childrenSize?.height ?? 0.0,
       maxWidth: childrenSize?.width ?? double.infinity,
       maxHeight: childrenSize?.height ?? double.infinity,
     );
-    // If you want to force the children to have a specific size, you can use
-    // the following line instead of the one above. It will force the children
-    // to take the available space, but it will not allow them to be bigger than
-    // that.
-    //
-    // Sets maxWidth and maxHeight to the minimum of the available space.
-    // final constraints = this.constraints.tighten();
 
     // The first child in the list of children. This is provided by the
     // ContainerRenderObjectMixin.
@@ -101,9 +92,6 @@ class RenderCircleLayout extends RenderBox
       angle += step;
       child = childParentData.nextSibling;
     }
-
-    // Set the size of the container to the diameter of the circle
-    size = Size(2 * radius, 2 * radius);
   }
 
   /// Paints the children. The [offset] parameter represents the offset at which
