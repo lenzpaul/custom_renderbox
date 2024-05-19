@@ -13,6 +13,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   /// The radius of the circle layout around which the children will be placed.
   static const _radius = 150.0;
+  static const _maxNumChildren = 20;
 
   /// The number of children to display around the circle.
   int numChildren = 0;
@@ -83,7 +84,7 @@ class _MainAppState extends State<MainApp> {
                   icon: const Icon(Icons.add),
                   onPressed: () {
                     setState(() {
-                      if (numChildren < 12) {
+                      if (numChildren < _maxNumChildren) {
                         numChildren++;
                       }
                     });

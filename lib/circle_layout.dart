@@ -2,32 +2,40 @@ import 'dart:math' as math;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 
+/// {@template render_circle_layout}
+/// A render object that positions its children in a circle.
+/// {@endtemplate}
 class RenderCircleLayout extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, CircleLayoutParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, CircleLayoutParentData> {
+  /// {@template radius}
+  /// The radius of the circle layout around which the children will be placed.
+  /// {@endtemplate}
   double radius;
 
-  /// The size of the children. If not provided, the children will be allowed to
-  /// size themselves based on their content.
+  /// {@macro childrenSize}
   Size? _childrenSize;
 
-  /// The size of the children. If not provided, the children will be allowed to
-  /// size themselves based on their content.
+  /// {@template childrenSize}
+  /// The size of the children.
+  ///
+  /// If this is not provided, the children will be allowed to size themselves
+  /// based on their content.
+  /// {@endtemplate}
   Size? get childrenSize => _childrenSize;
 
-  /// The size of the children. If not provided, the children will be allowed to
-  /// size themselves based on their content.
+  /// {@macro childrenSize}
   set childrenSize(Size? value) {
     _childrenSize = value;
     markNeedsLayout();
   }
 
+  /// {@macro render_circle_layout}
   RenderCircleLayout({
-    required double radius,
+    required this.radius,
     Size? childrenSize,
-  })  : _childrenSize = childrenSize,
-        radius = radius;
+  }) : _childrenSize = childrenSize;
   @override
   void setupParentData(RenderBox child) {
     if (child.parentData is! CircleLayoutParentData) {
@@ -137,7 +145,10 @@ class CircleLayoutParentData extends ContainerBoxParentData<RenderBox> {}
 /// [RenderCircleLayout] render object to layout its children in a circle.
 /// {@endtemplate}
 class CircleLayout extends MultiChildRenderObjectWidget {
+  /// {@macro radius}
   final double radius;
+
+  /// {@macro childrenSize}
   final Size? childrenSize;
 
   /// {@macro circle_layout}
