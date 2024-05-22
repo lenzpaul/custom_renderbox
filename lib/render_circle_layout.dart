@@ -50,6 +50,8 @@ class RenderCircleLayout extends RenderBox
     }
   }
 
+  // - Set the size of the container that this render object represents
+  // - Set the position (offset) of each child in the circle
   @override
   void performLayout() {
     // Set the size of the container that this render object represents to be
@@ -110,16 +112,16 @@ class RenderCircleLayout extends RenderBox
       _paintCircle(context, offset);
     }
 
-    // Paint the children on top of the circle and paint the overlap between the
-    // children.
     RenderBox? child = firstChild;
     while (child != null) {
       final CircleLayoutParentData childParentData =
           child.parentData! as CircleLayoutParentData;
 
+      // Paint the children on top of the circle
       context.paintChild(child, childParentData.offset + offset);
-
       paintedChildren.add(child);
+
+      // Paint the overlap between the children
       _paintOverlap(context, offset, child, paintedChildren);
 
       child = childParentData.nextSibling;

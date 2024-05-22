@@ -21,8 +21,8 @@ class CircleLayout extends MultiChildRenderObjectWidget {
     super.key,
     required this.radius,
     this.showCircle = false,
-    required super.children,
     this.childrenSize,
+    required super.children,
   });
 
   /// Creates the render object for this widget. Called by the framework when
