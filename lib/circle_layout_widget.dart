@@ -14,10 +14,13 @@ class CircleLayout extends MultiChildRenderObjectWidget {
   /// {@macro childrenSize}
   final Size? childrenSize;
 
+  final bool showCircle;
+
   /// {@macro circle_layout}
   const CircleLayout({
     super.key,
     required this.radius,
+    this.showCircle = false,
     required super.children,
     this.childrenSize,
   });
@@ -29,6 +32,7 @@ class CircleLayout extends MultiChildRenderObjectWidget {
     return RenderCircleLayout(
       radius: radius,
       childrenSize: childrenSize,
+      showCircle: showCircle,
     );
   }
 
@@ -45,5 +49,6 @@ class CircleLayout extends MultiChildRenderObjectWidget {
       BuildContext context, RenderCircleLayout renderObject) {
     renderObject.radius = radius;
     renderObject.childrenSize = childrenSize;
+    renderObject.showCircle = showCircle;
   }
 }

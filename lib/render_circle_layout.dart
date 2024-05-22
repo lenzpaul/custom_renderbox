@@ -20,6 +20,8 @@ class RenderCircleLayout extends RenderBox
   /// {@macro childrenSize}
   Size? _childrenSize;
 
+  bool showCircle;
+
   /// {@template childrenSize}
   /// The size of the children.
   ///
@@ -39,6 +41,7 @@ class RenderCircleLayout extends RenderBox
   RenderCircleLayout({
     required this.radius,
     Size? childrenSize,
+    this.showCircle = false,
   }) : _childrenSize = childrenSize;
   @override
   void setupParentData(RenderBox child) {
@@ -103,14 +106,9 @@ class RenderCircleLayout extends RenderBox
     final Set<RenderBox> paintedChildren = {};
 
     // Paint the circle
-    context.canvas.drawCircle(
-      offset + Offset(radius, radius),
-      radius,
-      Paint()
-        ..color = Colors.blue.withOpacity(0.5)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 4,
-    );
+    if (showCircle) {
+      _paintCircle(context, offset);
+    }
 
     // Paint the children on top of the circle and paint the overlap between the
     // children.
@@ -126,6 +124,17 @@ class RenderCircleLayout extends RenderBox
 
       child = childParentData.nextSibling;
     }
+  }
+
+  void _paintCircle(PaintingContext context, Offset offset) {
+    context.canvas.drawCircle(
+      offset + Offset(radius, radius),
+      radius,
+      Paint()
+        ..color = Colors.blue.withOpacity(0.5)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 4,
+    );
   }
 }
 
