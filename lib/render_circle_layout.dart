@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 /// A render object that positions its children in a circle.
 /// {@endtemplate}
 class RenderCircleLayout extends RenderBox
+    // These mixins provide helpful methods for managing children
     with
         ContainerRenderObjectMixin<RenderBox, CircleLayoutParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, CircleLayoutParentData> {
@@ -30,6 +31,7 @@ class RenderCircleLayout extends RenderBox
   /// {@macro childrenSize}
   set childrenSize(Size? value) {
     _childrenSize = value;
+    // Mark dirty to trigger a layout/paint update
     markNeedsLayout();
   }
 
@@ -60,7 +62,7 @@ class RenderCircleLayout extends RenderBox
     final double step = 2 * math.pi / childCount;
 
     // The constraints for the children.
-    final BoxConstraints constraints = BoxConstraints(
+    final BoxConstraints childrenConstraints = BoxConstraints(
       minWidth: childrenSize?.width ?? 0.0,
       minHeight: childrenSize?.height ?? 0.0,
       maxWidth: childrenSize?.width ?? double.infinity,
@@ -75,7 +77,7 @@ class RenderCircleLayout extends RenderBox
     while (child != null) {
       // Compute the size of the child
       child.layout(
-        constraints,
+        childrenConstraints,
         parentUsesSize: true,
       );
 
@@ -110,6 +112,8 @@ class RenderCircleLayout extends RenderBox
         ..strokeWidth = 4,
     );
 
+    // Paint the children on top of the circle and paint the overlap between the
+    // children.
     RenderBox? child = firstChild;
     while (child != null) {
       final CircleLayoutParentData childParentData =

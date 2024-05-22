@@ -31,6 +31,9 @@ class _MainAppState extends State<MainApp> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            //
+            // Custom Widget with Custom Render Object
+            //
             CircleLayout(
               radius: _radius,
               childrenSize:
