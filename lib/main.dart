@@ -35,7 +35,7 @@ class _MainAppState extends State<MainApp> {
             // Custom Widget with Custom Render Object
             //
             CircleLayout(
-              showCircle: false,
+              showCircle: true,
               radius: _radius,
               childrenSize:
                   _childrenSize != null ? Size.square(_childrenSize!) : null,

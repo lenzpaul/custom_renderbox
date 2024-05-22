@@ -167,12 +167,21 @@ void _paintOverlap(
 
     if (childRect.overlaps(otherChildRect)) {
       final Rect overlapRect = childRect.intersect(otherChildRect);
-      context.canvas.drawRect(
-          overlapRect,
-          Paint()
-            ..color = Colors.red.withOpacity(0.75)
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 4);
+      context.canvas
+        // Outline
+        ..drawRect(
+            overlapRect,
+            Paint()
+              ..color = Colors.red.withOpacity(0.75)
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 4)
+        // Fill
+        ..drawRect(
+            overlapRect,
+            Paint()
+              ..color = Colors.red.withOpacity(0.2)
+              ..style = PaintingStyle.fill
+              ..strokeWidth = 4);
     }
   }
 }
